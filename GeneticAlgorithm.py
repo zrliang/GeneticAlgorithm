@@ -81,7 +81,7 @@ OrderJobM3=[]
 for x in range(len(M1)):
     OrderJobM1.append(random.random())
 cM1 = list(zip(M1,OrderJobM1))  #兩個一維轉成一個二維
-nM1=sorted(cM1,key=(lambda x:x[1]),reverse=True) #二維排序(x[1]針對欄位二)
+nM1=sorted(cM1,key=(lambda x:x[1]),reverse=True) #二維排序(x[1]針對欄位二) 由大到小
 #print(nM1)  #排序結果
 for x in range(len(M2)):
     OrderJobM2.append(random.random())
