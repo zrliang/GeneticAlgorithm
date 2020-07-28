@@ -1,0 +1,8 @@
+{
+    "python.pythonPath": "C:\\Python37\\python.exe",
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
+    "files.trimTrailingWhitespace": true, //儲存濾掉多餘的空格
+    "files.autoSave": "onFocusChange" //自動儲存
+
+}

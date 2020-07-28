@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Jul 27 15:39:35 2020
+
+@author: admin
+"""
+
 import plotly.express as px
 import pandas as pd
 
@@ -9,4 +16,3 @@ df = pd.DataFrame([
 
 fig = px.timeline(df, x_start="Start", x_end="Finish", y="Resource", color="Resource")
 fig.show()
-
