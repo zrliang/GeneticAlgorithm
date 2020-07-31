@@ -5,14 +5,33 @@ Created on Mon Jul 27 15:39:35 2020
 @author: admin
 """
 
-import plotly.express as px
-import pandas as pd
+# 載入需要的...
 
-df = pd.DataFrame([
-    dict(Task="Job A", Start='2009-01-01', Finish='2009-02-28', Resource="Alex"),
-    dict(Task="Job B", Start='2009-03-05', Finish='2009-04-15', Resource="Alex"),
-    dict(Task="Job C", Start='2009-02-20', Finish='2009-05-30', Resource="Max")
-])
+import matplotlib.pyplot as plt
+import numpy as np
 
-fig = px.timeline(df, x_start="Start", x_end="Finish", y="Resource", color="Resource")
-fig.show()
+# 準備數據 ... 假設我要畫一個sin波 從0~180度
+
+x = np.arange(0,180)
+y = np.sin(x * np.pi / 180.0)
+
+
+# 開始畫圖
+
+    # 設定要畫的的x,y數據list....
+
+plt.plot(x,y)
+
+    # 設定圖的範圍, 不設的話，系統會自行決定
+plt.xlim(-30,390)
+plt.ylim(-1.5,1.5)
+    # 照需要寫入x 軸和y軸的 label 以及title
+
+plt.xlabel("x-axis")
+plt.ylabel("y-axis")
+plt.title("The Title")
+
+
+    # 在這個指令之前，都還在做畫圖的動作
+    # 這個指令算是 "秀圖"
+plt.show()
