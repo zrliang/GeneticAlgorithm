@@ -214,13 +214,13 @@ import datetime
 df=[]
 #M1
 for i in range(len(M1Answer)):
-    df.append(dict(Task='Job %s'%M1Answer[i][0], Start='2018-07-14 %s'%datetime.timedelta(seconds=M1Answer[i][1]), Finish='2018-07-14 %s'%datetime.timedelta(seconds=M1Answer[i][2]),Resource='Machine 1'))
+    df.append(dict(Task='Job %s'%M1Answer[i][0], Start='2020-07-31 %s'%datetime.timedelta(minutes=M1Answer[i][1]), Finish='2020-07-31 %s'%datetime.timedelta(minutes=M1Answer[i][2]),Resource='Machine 1'))
 
 for i in range(len(M2Answer)):
-    df.append(dict(Task='Job %s'%M2Answer[i][0], Start='2018-07-14 %s'%datetime.timedelta(seconds=M2Answer[i][1]), Finish='2018-07-14 %s'%datetime.timedelta(seconds=M2Answer[i][2]),Resource='Machine 2'))
+    df.append(dict(Task='Job %s'%M2Answer[i][0], Start='2020-07-31 %s'%datetime.timedelta(minutes=M2Answer[i][1]), Finish='2020-07-31 %s'%datetime.timedelta(minutes=M2Answer[i][2]),Resource='Machine 2'))
 
 for i in range(len(M3Answer)):
-    df.append(dict(Task='Job %s'%M3Answer[i][0], Start='2018-07-14 %s'%datetime.timedelta(seconds=M3Answer[i][1]), Finish='2018-07-14 %s'%datetime.timedelta(seconds=M3Answer[i][2]),Resource='Machine 3'))
+    df.append(dict(Task='Job %s'%M3Answer[i][0], Start='2020-07-31 %s'%datetime.timedelta(minutes=M3Answer[i][1]), Finish='2020-07-31 %s'%datetime.timedelta(minutes=M3Answer[i][2]),Resource='Machine 3'))
 '''
 df = pd.DataFrame([
     dict(Task="Job A", Start='2009-01-01', Finish='2009-02-28', Resource="Alex"),
@@ -228,6 +228,6 @@ df = pd.DataFrame([
     dict(Task="Job C", Start='2009-02-20', Finish='2009-05-30', Resource="Max")
 ])
 '''
-fig = px.timeline(df, x_start="Start", x_end="Finish", y="Resource", color="Task")
+fig = px.timeline(df, x_start="Start", x_end="Finish", y="Resource", color="Task",text="Task")
 fig.show()
 
