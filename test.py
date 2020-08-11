@@ -12,7 +12,7 @@ ChromosomeList=[]
 JobResult=[]
 for i in range(20):
     gene=random.random()
-    ChromosomeList.append(gene)
+    ChromosomeList.append(round(gene,5))
 
 for s in range(10):
     #單份機率
@@ -171,21 +171,24 @@ elif(M2EndT[-1]>M1EndT[-1] and M2EndT[-1]>M3EndT[-1]):
 else:
     Makespan=M3EndT[-1]
 
+MakespanList=[]
+MakespanList.append(Makespan)
 print(Makespan)
 
 
-#合併
-
+a=[ChromosomeList]
+b=[FinalM1]
+c=[FinalM2]
+d=[FinalM3]
+e=[MakespanList]
+FinalChromosome=a+b+c+d+e
 
 
 #---------------------
-#雙點交配
 
+#雙點交配
 
 #單點突變
 
-
 #畫圖
-
-
 
