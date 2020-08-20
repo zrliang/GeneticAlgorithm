@@ -7,7 +7,7 @@ ProcessTime=[[80,0,60],[75,86,94],[25,0,96],[78,95,89],[45,78,0],
               [12,0,65],[55,99,87],[11,0,16],[0,16,45],[43,56,21]]
 
 
-    #產生染色體
+#重新產生機率(父代用)
 def GetInitial():
     import random
     ChromosomeList=[]
@@ -18,8 +18,10 @@ def GetInitial():
     ChromosomeLenth=len(ChromosomeList)
     return ChromosomeList
 
+GetInitial()
 
-def GetChromosome(ChromosomeList):
+#產生工作順序&機器工作
+def GetMachineRsult(ChromosomeList):
     JobResult=[]
     for s in range(10):
         #單份機率
@@ -46,8 +48,6 @@ def GetChromosome(ChromosomeList):
         JobResult.append(FinalMachineJ1)
 
     #分類依機台
-
-
     JobNumber=1
     OrderNum=10
     M1=[]
@@ -70,6 +70,15 @@ def GetChromosome(ChromosomeList):
         JobNumber+=1
         OrderNum+=1
 
+    return(M1,M2,M3,OrderJobM1,OrderJobM2,OrderJobM3)
+
+if(len(M1)==0 or len(M2)==0 or len(M3)==0):
+    GetMachineRsult(GetInitial()
+
+
+#加上=0的狀況
+
+GetMachineRsult(ChromosomeList)
     #print("步驟一")
     #print(M1)
     #print(M2)
@@ -78,18 +87,18 @@ def GetChromosome(ChromosomeList):
     #步驟二
     #決定每個Job在三個機台中的先後順序
 
-    def GetMachineJob(M1,OrderJobM1):
-        cM1 = list(zip(M1,OrderJobM1))  #兩個一維轉成一個二維
-        nM1=sorted(cM1,key=(lambda x:x[1]),reverse=True) #二維排序(x[1]針對欄位二) 由大到小
-        nnM1=[]
-        for a in range(len(nM1)):
-        # print(nM1[a][0]) >> Job幾
-            nnM1.append(nM1[a][0])
-        return nnM1
+def GetMachineJob(M1,OrderJobM1):
+    cM1 = list(zip(M1,OrderJobM1))  #兩個一維轉成一個二維
+    nM1=sorted(cM1,key=(lambda x:x[1]),reverse=True) #二維排序(x[1]針對欄位二) 由大到小
+    nnM1=[]
+    for a in range(len(nM1)):
+    # print(nM1[a][0]) >> Job幾
+        nnM1.append(nM1[a][0])
+    return nnM1
 
-    FinalM1=GetMachineJob(M1,OrderJobM1)
-    FinalM2=GetMachineJob(M2,OrderJobM2)
-    FinalM3=GetMachineJob(M3,OrderJobM3)
+FinalM1=GetMachineJob(M1,OrderJobM1)
+FinalM2=GetMachineJob(M2,OrderJobM2)
+FinalM3=GetMachineJob(M3,OrderJobM3)
 
     #print("步驟二")
     #print(FinalM1)
@@ -103,6 +112,8 @@ def GetChromosome(ChromosomeList):
     ###---------M1-------
 
     # 開始時間
+def GetFinalChromosome(FinalM1,FinalM2,FinalM3):
+
     M1t=0
     M1StartAnswer=M1t
     M1StartT=[]
@@ -114,7 +125,7 @@ def GetChromosome(ChromosomeList):
 
     # 結束時間
     M1EndAnswer=M1t
-    M1EndT=[0]
+    M1EndT=[]
     for b in range(len(FinalM1)):
     # M1StartT.append(Processtime[nnM1[b]-1][0])
         M1EndAnswer+=ProcessTime[FinalM1[b]-1][0]   #0 [80,0,60] 取第一個欄位
@@ -129,7 +140,7 @@ def GetChromosome(ChromosomeList):
     # 開始時間
     M2t=0
     M2StartAnswer=M2t
-    M2StartT=[]
+    M2StartT=[0]
     M2StartT.append(M2t)
     for b in range(len(FinalM2)-1):
     # M1StartT.append(Processtime[nnM1[b]-1][0])
@@ -172,7 +183,9 @@ def GetChromosome(ChromosomeList):
     #print(M3Answer)
 
     #-------Makespan----------
-    #考慮有機器未派到工作之情況(EndT 先加一個0)
+    #還沒考慮有機器未派到工作之情況
+
+
 
     if(M1EndT[-1]>M2EndT[-1] and M1EndT[-1]>M3EndT[-1]):
         Makespan=M1EndT[-1]
@@ -196,23 +209,21 @@ def GetChromosome(ChromosomeList):
     return(FinalChromosome)
 
 
-Parent1=GetChromosome(GetInitial()) ##Getinitial
-Parent2=GetChromosome(GetInitial())
-
+for i in range(50):
+    Parent1=GetFinalChromosome(FinalM1,FinalM2,FinalM3) ##Getinitial
+    print(Parent1)
 
 
 
 #---------------------
 
 #雙點交配
-
+'''
 p1=Parent1[0]
 p2=Parent2[0]
 CutPoint=[]
 import random
 size=range(1,21)  #染色體大小 #10+10(range(1,21))
-print(p1)
-print(p2)
 
 CutPoint=random.sample(size, 2)
 CutPoint.sort()
@@ -230,11 +241,9 @@ c2[strpoint-1:endpoint]=p1[strpoint-1:endpoint]
 Offspring1=GetChromosome(c1)
 Offspring2=GetChromosome(c2)
 
-print(c1)
-print(c2)
-#print(Offspring1)
-#print(Offspring2)
-
+print(Offspring1)
+print(Offspring2)
+'''
 
 #單點突變
 
