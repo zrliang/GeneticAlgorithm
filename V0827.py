@@ -210,7 +210,7 @@ import numpy as np
 np.set_printoptions(precision=4,suppress=True) #suppress取消科學計數法
 
 #總共6+6
-PopulationNum=2
+PopulationNum=50
 TotalChromosome=np.zeros((PopulationNum*2,5,20))
 ParentsChromosome=np.zeros((PopulationNum,5,20))
 OffspringChromosome=np.zeros((PopulationNum,5,20))
@@ -226,18 +226,23 @@ OffspringChromosome[:]=ParentsChromosome[:]
 
 #print(OffspringChromosome[0][0])
 #---------------------
+
 #交配率(交配&突變)
 import math
 Matingrate=0.5
 MatingNum=math.ceil(PopulationNum*Matingrate) #無條件進位
-#print(MatingNum)
+
+#Question
+tempMateNum=40
+tempMutationNum=10
 
 #------------------------------------------------------------------
 #交配
 ##任兩條進行交配(一次產生兩條)
-'''
-sizenum=25  #決定要做幾次(3次>>產生6條子代)
+
+sizenum=int(tempMateNum/2)  #決定要做幾次(3次>>產生6條子代)
 even = [i-1 for i in range(1,sizenum*2) if i %2==1]
+
 
 for i in even:
     import random
@@ -258,7 +263,6 @@ for i in even:
     #print(p2)
 
     CutPoint=[]
-    import random
     size=range(1,21)  #染色體大小 #10+10(range(1,21))
 
     CutPoint=random.sample(size, 2)
@@ -283,11 +287,13 @@ for i in even:
 
     Temp1Chromosome[i]=Offspring1
     Temp1Chromosome[i+1]=Offspring2
-'''
+
+#print(Temp1Chromosome)
+
 #單點突變
 ##待
 
-sizenum2=2  #決定要做幾次
+sizenum2=tempMutationNum  #決定要做幾次
 
 import random
 #任選一條
@@ -298,7 +304,7 @@ AnyChros=random.sample(size1, sizenum2) ##產生被挑中的染色體清單(size
 for i in range(sizenum2):
     size2=range(0,20) #基因數
     AnyGene=random.sample(size2,1) #list
-    print(AnyGene)
+    #print(AnyGene)
     prob=OffspringChromosome[AnyChros[i]][0].tolist()
     #print(p1)
     NewProb=random.random()
@@ -308,26 +314,26 @@ for i in range(sizenum2):
     OffspringMutation=GetChromosome(prob)
     Temp2Chromosome[i]=OffspringMutation
 
-print(Temp2Chromosome)
-
-#print(p1)
-#print(p1)
-
-size=range(1,21)  #染色體大小 #10+10(range(1,21))
-
-#print(CutPoint)
-#produce offsprings
-#Offspring1=GetChromosome(c1)
-
-#Temp1Chromosome[i]=Offspring1
+#print(Temp2Chromosome)
 
 
 #合併
-'''
+
+#以上暫時
+
 for i in range(0,PopulationNum):
-    TotalChromosome[i]=ParentsChromosome[i] #前半
-    TotalChromosome[i+PopulationNum]=Temp1Chromosome[i] #後半
-#print(Temp1Chromosome)
+    TotalChromosome[i]=ParentsChromosome[i] #前1/2
+
+for i in range(0,tempMateNum):
+    TotalChromosome[i+PopulationNum]=Temp1Chromosome[i]
+
+for i in range(0,tempMutationNum):
+    TotalChromosome[i+PopulationNum+tempMateNum]=Temp2Chromosome[i]
+
+#print(TotalChromosome)
+
+
+
 
 MakespanOrderIndex=[]
 MakespanOrderValue=[]
@@ -344,8 +350,9 @@ OrderMs=sorted(tempMs,key=(lambda x:x[1]),reverse=False) #二維排序(x[1]針�
 
 #取出第一名
 print(OrderMs[0][1])
-print(TotalChromosome[OrderMs[0][0]])
-'''
+#print(TotalChromosome[OrderMs[0][0]])
+
+
 #合併成一代最終結果
 '''
 for i in range(PopulationNum):
@@ -354,6 +361,7 @@ for i in range(PopulationNum):
 print(FinalChromosome)
 '''
 
+#時間內最佳解
 
 #畫圖
 
