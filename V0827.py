@@ -354,7 +354,6 @@ def GetOneGeneration(ParentsChromosome):
     OrderMs=sorted(tempMs,key=(lambda x:x[1]),reverse=False) #二維排序(x[1]針對欄位二) 由大到小
 
     #合併成一代最終結果
-    ThebestChr=TotalChromosome[OrderMs[0][0]]
 
     for i in range(PopulationNum):
         FinalChromosome[i]=TotalChromosome[OrderMs[i][0]]
@@ -364,21 +363,24 @@ def GetOneGeneration(ParentsChromosome):
 
 #print(TotalChromosome[OrderMs[0][0]])
 
-InitialV=GetOneGeneration(ParentsChromosome)
+#做100代
+MakespanRecord=[]
+for i in range(10):
+    A=GetOneGeneration(ParentsChromosome)
+    ParentsChromosome=A
+    MakespanRecord.append(A[0][4][0])
 
-Hey=GetOneGeneration(InitialV)
-print(InitialV)
-print(Hey)
-'''
-for i in range(PopulationNum):
-    ParentsChromosome[i]=GetChromosome(GetInitial())
-'''
+print(A)
 
-'''
-for i in range(50):
-    A1,A2=GetOneGeneration()
-    print(A1)
-'''
+#收斂圖
+
+import matplotlib.pyplot as plt
+
+plt.plot([i for i in range(len(MakespanRecord))],MakespanRecord,'b') #x,y為list資料
+plt.ylabel('makespan',fontsize=15)
+plt.xlabel('generation',fontsize=15)
+plt.show()
+
 
 
 #print(OrderMs)
