@@ -18,8 +18,6 @@ def GetInitial():
     ChromosomeLenth=len(ChromosomeList)
     return ChromosomeList
 
-print(GetInitial())
-
 def GetChromosome(ChromosomeList):
     JobResult=[]
     for s in range(10):
@@ -205,7 +203,7 @@ def GetChromosome(ChromosomeList):
     for i in range(len(e)):
         OneChromosome[4][i]=e[i]
 
-    return(OneChromosome) #產生特定一條染色體，機率須給定
+    return OneChromosome #產生特定一條染色體，機率須給定
                           #GetChromosome(ChromosomeList)
 #三維array
 import numpy as np
@@ -227,7 +225,7 @@ FinalChromosome=np.zeros((PopulationNum,5,20))
 TestChromosome=np.zeros((50,5,20))
 
 #母體
-##第一次
+##產生第一次母代50條的染色體
 for i in range(PopulationNum):
     ParentsChromosome[i]=GetChromosome(GetInitial()) ##Getinitial
 
@@ -368,8 +366,13 @@ def GetOneGeneration(ParentsChromosome):
 
 InitialV=GetOneGeneration(ParentsChromosome)
 
+Hey=GetOneGeneration(InitialV)
+print(InitialV)
+print(Hey)
+'''
 for i in range(PopulationNum):
     ParentsChromosome[i]=GetChromosome(GetInitial())
+'''
 
 '''
 for i in range(50):
