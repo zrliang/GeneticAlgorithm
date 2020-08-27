@@ -254,7 +254,7 @@ def GetOneGeneration(ParentsChromosome):
     #交配
     ##任兩條進行交配(一次產生兩條)
 
-    #tempMateNum單數不適用!!!!
+    #tempMateNum單數不適用
 
     even = [i-1 for i in range(1,tempMateNum) if i %2==1] #tempMateNum決定要做幾次(3次>>產生6條子代)
 

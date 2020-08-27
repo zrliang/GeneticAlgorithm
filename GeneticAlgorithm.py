@@ -207,7 +207,6 @@ else:
 ## Gantt
 
 import plotly.express as px
-import pandas as pd
 import datetime
 
 df=[]
@@ -241,3 +240,4 @@ df = pd.DataFrame([
 fig = px.timeline(df, x_start="Start", x_end="Finish", y="Resource", color="Task",text="Task")
 fig.show()
 
+print(df)
