@@ -350,7 +350,8 @@ def GetOneGeneration(ParentsChromosome):
     MakespanOrderIndex=[]
     MakespanOrderValue=[]
 
-    #排序，取出最佳染色體
+    #排序，排序從0-100名
+
     for i in range(PopulationNum*2):
         MakespanOrderIndex.append(i)
         MakespanOrderValue.append(TotalChromosome[i][4][0]) #[4][0] 固定
@@ -359,10 +360,11 @@ def GetOneGeneration(ParentsChromosome):
     OrderMs=sorted(tempMs,key=(lambda x:x[1]),reverse=False) #二維排序(x[1]針對欄位二) 由大到小
 
     #合併成一代最終結果
+    #菁英制(0.2)
+    #排名等級輪盤法(0.8)
 
     for i in range(PopulationNum):
         FinalChromosome[i]=TotalChromosome[OrderMs[i][0]]
-
 
     return FinalChromosome
 

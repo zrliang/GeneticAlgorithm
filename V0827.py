@@ -1,5 +1,5 @@
 import time
-start = time.process_time()
+start = time.process_time() #計算執行時間
 
 
 #工件機器限制 K
@@ -10,24 +10,26 @@ MachineLimit=[[1,0,1],[1,1,1],[1,0,1],[1,1,1],[1,1,0],
 ProcessTime=[[80,0,60],[75,86,94],[25,0,96],[78,95,89],[45,78,0],
               [12,0,65],[55,99,87],[11,0,16],[0,16,45],[43,56,21]]
 
-ChromosomeLenth=20
 JobNum=10
+ChromosomeLenth=JobNum*2
 MachoneNum=3
 
-    #產生新的機率
+    #產生新的機率(ok)
 def GetInitial():
     import random
     ChromosomeList=[]
 
-    for i in range(20):
+    for i in range(ChromosomeLenth):
         gene=random.random()
         ChromosomeList.append(round(gene,5))
     return ChromosomeList
 
+    #產生一條完整染色體(ok)
 def GetChromosome(ChromosomeList):
     JobResult=[]
+
     #輪盤法
-    for s in range(10): #Job數
+    for s in range(JobNum): #Job數
         #單份機率
         sum = 0
         for i in MachineLimit[s]:
@@ -42,7 +44,7 @@ def GetChromosome(ChromosomeList):
 
         #工作派給機器(j)
         FinalMachineJ1=0
-        sequence=[0,1,2] #機1.2.3
+        sequence=[i for i in range(MachoneNum)] #機1.2.3
         for j in sequence:
             if(MachineLimit[s][j]==1):
                 k-=1
@@ -104,7 +106,7 @@ def GetChromosome(ChromosomeList):
     ##--------------------------------要改------------------------------
     #步驟三
     #計算每個Job的開始與結束時間
-    #print("步驟三")
+
     ###---------M1-------
 
     # 開始時間
@@ -179,7 +181,7 @@ def GetChromosome(ChromosomeList):
     #-------Makespan----------
     #考慮有機器未派到工作之情況(EndT 先加一個0)
 
-    #決定makespan
+    #決定makespan比大小
     EndTList=[]
     EndTList.append(M1EndT[-1])
     EndTList.append(M2EndT[-1])
@@ -254,7 +256,7 @@ def GetOneGeneration(ParentsChromosome):
     #交配
     ##任兩條進行交配(一次產生兩條)
 
-    #tempMateNum單數不適用
+    #tempMateNum單數不適用!!!!
 
     even = [i-1 for i in range(1,tempMateNum) if i %2==1] #tempMateNum決定要做幾次(3次>>產生6條子代)
 
@@ -367,15 +369,15 @@ def GetOneGeneration(ParentsChromosome):
 #print(TotalChromosome[OrderMs[0][0]])
 
 #做100代
-'''
-MakespanRecord=[]
-for i in range(10):
-    A=GetOneGeneration(ParentsChromosome)
-    ParentsChromosome=A
-    MakespanRecord.append(A[0][4][0])
 
-print(A[0:3])
-'''
+#MakespanRecord=[]
+#for i in range(10):
+#    A=GetOneGeneration(ParentsChromosome)
+#    ParentsChromosome=A
+ #   MakespanRecord.append(A[0][4][0])
+
+#print(A[0:3])
+
 
 #時間內做完
 MakespanRecord=[]
@@ -408,19 +410,48 @@ print(MakespanRecord[-1])
 print("執行時間：%f 秒" % (end - start))
 
 
-#print(OrderMs)
-
-#取出第一名
-#print(OrderMs[0][1])
-#print(TotalChromosome[OrderMs[0][0]]
-
-#Answer1=OrderMs[0][1] #makespan
-#Answer2=TotalChromosome[OrderMs[0][0]] #那條染色體
-#以上為一代的結果
+#算出開始&結束時間(以上只有工作順序)
 
 
-#時間內最佳解
+#畫甘特圖
+'''
+print(A[0])
+for i in range(10):
+    if(A[0][1][i]!=0):
+        print(int(A[0][1][i]))
+'''
 
-#畫圖
+'''
+import plotly.express as px
+import pandas as pd
+import datetime
+
+df=[]
+#M1
+# Task放工件編號; Start&Finish分別放各工件的開始與結束時間，
+# 初始時間需先給定一個時間格式 ex: 2020-07-31 分鐘格式 ，我這邊是利用datetime.timedelta(minutes=)將工作時間轉成分鐘
+# Resource 放機器分類
+
+for i in range(len(M1Answer)):
+    df.append(dict(Task='Job %s'%M1Answer[i][0], Start='2020-07-31 %s'%datetime.timedelta(minutes=M1Answer[i][1]),
+    Finish='2020-07-31 %s'%datetime.timedelta(minutes=M1Answer[i][2]),Resource='Machine 1'))
+
+#M2
+for i in range(len(M2Answer)):
+    df.append(dict(Task='Job %s'%M2Answer[i][0], Start='2020-07-31 %s'%datetime.timedelta(minutes=M2Answer[i][1]),
+    Finish='2020-07-31 %s'%datetime.timedelta(minutes=M2Answer[i][2]),Resource='Machine 2'))
+
+#M3
+for i in range(len(M3Answer)):
+    df.append(dict(Task='Job %s'%M3Answer[i][0], Start='2020-07-31 %s'%datetime.timedelta(minutes=M3Answer[i][1]),
+    Finish='2020-07-31 %s'%datetime.timedelta(minutes=M3Answer[i][2]),Resource='Machine 3'))
+
+#呈現圖表
+fig = px.timeline(df, x_start="Start", x_end="Finish", y="Resource", color="Task",text="Task")
+fig.show()
+'''
+
+
+
 
 
