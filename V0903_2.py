@@ -245,12 +245,15 @@ def GetOneGeneration(ParentsChromosome):
     #---------------------
     #交配率(交配&突變)
     import math
-    Matingrate=0.5
+    PopulationNum=50
+    Matingrate=0.01
     MatingNum=math.ceil(PopulationNum*Matingrate) #無條件進位
+    if(MatingNum%2==1):
+        MatingNum+=1
+    #Question
 
     #Question
-    tempMateNum=30
-    tempMutationNum=20
+    MutationNum=PopulationNum-MatingNum
 
     #------------------------------------------------------------------
 
@@ -259,7 +262,7 @@ def GetOneGeneration(ParentsChromosome):
 
     #tempMateNum單數不適用!!!!
 
-    even = [i-1 for i in range(1,tempMateNum) if i %2==1] #tempMateNum決定要做幾次(3次>>產生6條子代)
+    even = [i-1 for i in range(1,MatingNum) if i %2==1] #tempMateNum決定要做幾次(3次>>產生6條子代)
 
     for i in even:
         #任選兩條
@@ -309,16 +312,16 @@ def GetOneGeneration(ParentsChromosome):
     #單點突變
     ##待
 
-    sizenum2=tempMutationNum  #決定要做幾次
+    #決定要做幾次
 
     import random
     #任選一條
     size1=range(0,PopulationNum)
     #print(size1)
-    AnyChros=random.sample(size1, sizenum2) ##產生被挑中的染色體清單(size,產生幾個)
+    AnyChros=random.sample(size1, MutationNum) ##產生被挑中的染色體清單(size,產生幾個)
     #print(AnyOne)
 
-    for i in range(sizenum2):
+    for i in range(MutationNum):
         size2=range(0,20) #基因數
         AnyGene=random.sample(size2,1) #list
         #print(AnyGene)
@@ -340,11 +343,11 @@ def GetOneGeneration(ParentsChromosome):
     for i in range(0,PopulationNum):
         TotalChromosome[i]=ParentsChromosome[i] #前1/2
 
-    for i in range(0,tempMateNum):
+    for i in range(0,MatingNum):
         TotalChromosome[i+PopulationNum]=Temp1Chromosome[i]
 
-    for i in range(0,tempMutationNum):
-        TotalChromosome[i+PopulationNum+tempMateNum]=Temp2Chromosome[i]
+    for i in range(0,MutationNum):
+        TotalChromosome[i+PopulationNum+MatingNum]=Temp2Chromosome[i]
 
     #print(TotalChromosome)
 
@@ -401,13 +404,15 @@ def GetOneGeneration(ParentsChromosome):
         if(temp not in select_index):
             select_index.append(temp)
     #print(count)
-    #print(select_index)
+    #測試
+    #OrderMsAA=sorted(select_index,reverse=False)
+    #print(OrderMsAA)
 
     #合併
     ##菁英
     for i in range(eliteN): #10
         FinalChromosome[i]=TotalChromosome[OrderMs[i][0]]
-    ##輪盤
+    ##輪盤法
     j=eliteN
     for i in select_index: #10-100
         FinalChromosome[j]=TotalChromosome[OrderMs[i+eliteN][0]]
@@ -427,19 +432,17 @@ def GetOneGeneration(ParentsChromosome):
 
 #print(A[0:3])
 
-'''
+
 MakespanRecord=[]
 GernerationN=0
 MakespanRecord.append(ParentsChromosome[0][4][0])
 
-for i in range(15):
+for i in range(100):
     A=GetOneGeneration(ParentsChromosome)
     ParentsChromosome=A
     MakespanRecord.append(A[0][4][0])
     GernerationN=i+1
 print(A)
- '''
-
 
 
 
@@ -459,7 +462,7 @@ for i in range(15000): #最多15000代
     GernerationN=i+1
     if(processT>=pt): #1秒
         break
-  '''
+ '''
 
 #收斂圖
 
