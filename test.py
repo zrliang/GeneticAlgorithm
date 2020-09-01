@@ -11,7 +11,7 @@ Machine=[[0.2,0.6,0.8,0.7],[4,10,6,0],[5,9,0,0],[3,2,7,0]]
 MachineNum=3
 
 # 開始結束時間&Makespan
-
+##小心各機初始時間
 Job_N=[]
 strT=[]
 temp_str=0 #初始時間
@@ -30,10 +30,9 @@ for i in range(MachineNum+1): #小心 #M1、M2、M3
             temp_str=temp_end
             endT.append(temp_end)
 
-print(Job_N)
-print(strT)
-print(endT)
-
+sort_endT=sorted(endT,reverse=False)
+Makespan=sort_endT[-1]
+print(Makespan)
 
 
 #甘特圖
@@ -54,6 +53,7 @@ fig.show()
 
 
 
+##略
 class User:
     def __init__(self,first,last,age):
         self.first=first

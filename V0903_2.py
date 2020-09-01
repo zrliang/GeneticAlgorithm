@@ -12,7 +12,7 @@ ProcessTime=[[80,0,60],[75,86,94],[25,0,96],[78,95,89],[45,78,0],
 
 JobNum=10
 ChromosomeLenth=JobNum*2
-MachoneNum=3
+MachineNum=3
 
     #產生新的機率(ok)
 def GetInitial():
@@ -44,7 +44,7 @@ def GetChromosome(ChromosomeList):
 
         #工作派給機器(j)
         FinalMachineJ1=0
-        sequence=[i for i in range(MachoneNum)] #機1.2.3
+        sequence=[i for i in range(MachineNum)] #機1.2.3
         for j in sequence:
             if(MachineLimit[s][j]==1):
                 k-=1
@@ -53,8 +53,19 @@ def GetChromosome(ChromosomeList):
                 break
         JobResult.append(FinalMachineJ1)
 
-    #分類依機台
+    machine_list=[]
+    order_list=[]
+    for k in range(MachineNum):
+        for i in range(JobNum):
+            if(JobResult[i]==k):
+                machine_list.append(i)
+                order_list.append(ChromosomeList[JobNum+i])
 
+
+
+
+    #分類依機台
+    '''
     JobNumber=1
     OrderNum=10
     M1=[]
@@ -76,6 +87,7 @@ def GetChromosome(ChromosomeList):
             OrderJobM3.append(ChromosomeList[OrderNum])
         JobNumber+=1
         OrderNum+=1
+    '''
 
     #print("步驟一")
     #print(M1)

@@ -418,16 +418,18 @@ def GetOneGeneration(ParentsChromosome):
 #print(TotalChromosome[OrderMs[0][0]])
 
 #做100代
+"""
+MakespanRecord=[]
+for i in range(10):
+    A=GetOneGeneration(ParentsChromosome)
+    ParentsChromosome=A
+    MakespanRecord.append(A[0][4][0])
 
-#MakespanRecord=[]
-#for i in range(10):
-#    A=GetOneGeneration(ParentsChromosome)
-#    ParentsChromosome=A
- #   MakespanRecord.append(A[0][4][0])
+print(A[0:3])
+"""
 
-#print(A[0:3])
 
-'''
+
 MakespanRecord=[]
 GernerationN=0
 MakespanRecord.append(ParentsChromosome[0][4][0])
@@ -438,9 +440,6 @@ for i in range(15):
     MakespanRecord.append(A[0][4][0])
     GernerationN=i+1
 print(A)
- '''
-
-
 
 
 #時間內做完
@@ -481,42 +480,6 @@ print(MakespanRecord[-1])
 
 
 #畫甘特圖
-'''
-print(A[0])
-for i in range(10):
-    if(A[0][1][i]!=0):
-        print(int(A[0][1][i]))
-'''
-
-'''
-import plotly.express as px
-import pandas as pd
-import datetime
-
-df=[]
-#M1
-# Task放工件編號; Start&Finish分別放各工件的開始與結束時間，
-# 初始時間需先給定一個時間格式 ex: 2020-07-31 分鐘格式 ，我這邊是利用datetime.timedelta(minutes=)將工作時間轉成分鐘
-# Resource 放機器分類
-
-for i in range(len(M1Answer)):
-    df.append(dict(Task='Job %s'%M1Answer[i][0], Start='2020-07-31 %s'%datetime.timedelta(minutes=M1Answer[i][1]),
-    Finish='2020-07-31 %s'%datetime.timedelta(minutes=M1Answer[i][2]),Resource='Machine 1'))
-
-#M2
-for i in range(len(M2Answer)):
-    df.append(dict(Task='Job %s'%M2Answer[i][0], Start='2020-07-31 %s'%datetime.timedelta(minutes=M2Answer[i][1]),
-    Finish='2020-07-31 %s'%datetime.timedelta(minutes=M2Answer[i][2]),Resource='Machine 2'))
-
-#M3
-for i in range(len(M3Answer)):
-    df.append(dict(Task='Job %s'%M3Answer[i][0], Start='2020-07-31 %s'%datetime.timedelta(minutes=M3Answer[i][1]),
-    Finish='2020-07-31 %s'%datetime.timedelta(minutes=M3Answer[i][2]),Resource='Machine 3'))
-
-#呈現圖表
-fig = px.timeline(df, x_start="Start", x_end="Finish", y="Resource", color="Task",text="Task")
-fig.show()
-'''
 
 
 
