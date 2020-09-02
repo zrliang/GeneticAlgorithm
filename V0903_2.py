@@ -14,7 +14,7 @@ JobNum=10
 ChromosomeLenth=JobNum*2
 MachineNum=3
 
-    #產生新的機率(ok)
+    #產生新的機率
 def GetInitial():
     import random
     ChromosomeList=[]
@@ -24,11 +24,12 @@ def GetInitial():
         ChromosomeList.append(round(gene,5))
     return ChromosomeList
 
-    #產生一條完整染色體(ok)
+    #產生一條完整染色體
 def GetChromosome(ChromosomeList):
+    OneChromosome=np.zeros((5,20)) #numpy
     JobResult=[]
 
-    #輪盤法
+    #派機(輪盤法)
     for s in range(JobNum): #Job數
         #單份機率
         sum = 0
@@ -53,179 +54,58 @@ def GetChromosome(ChromosomeList):
                 break
         JobResult.append(FinalMachineJ1)
 
+    #工作順序
     machine_list=[]
     order_list=[]
-    for k in range(MachineNum):
+    for k in range(MachineNum+1):
+        if(k==0):
+            continue
         for i in range(JobNum):
             if(JobResult[i]==k):
-                machine_list.append(i)
+                machine_list.append(i+1)
                 order_list.append(ChromosomeList[JobNum+i])
 
+        Job_order_=list(zip(machine_list,order_list))  #兩個一維轉成一個二維
+        sort_job_=sorted(Job_order_,key=(lambda x:x[1]),reverse=True) #二維排序(x[1]針對欄位二) 由大到小
+        for j in range(len(machine_list)):
+            OneChromosome[k][j]=sort_job_[j][0]
+        machine_list=[]
+        order_list=[]
 
+    # 開始結束時間&Makespan
+    ##小心各機初始時間
+    Job_N=[]
+    strT=[]
+    temp_str=0 #初始時間
+    endT=[]
+    temp_end=0
+    for i in range(MachineNum+1): #小心 #M1、M2、M3
+        if i==0:
+            continue
+        for s in range(JobNum):
+            if(s==0):
+                temp_str=0 #換機temp_str從0開始計算
+            if(OneChromosome[i][s]!=0):
+                Job_N.append(OneChromosome[i][s])
+                strT.append(temp_str)
+                temp_end=temp_str+ProcessTime[int(OneChromosome[i][s])-1][i-1]
+                temp_str=temp_end
+                endT.append(temp_end)
 
+    sort_endT=sorted(endT,reverse=False)
+    Makespan=sort_endT[-1]
 
-    #分類依機台
-    '''
-    JobNumber=1
-    OrderNum=10
-    M1=[]
-    M2=[]
-    M3=[]
-    OrderJobM1=[]
-    OrderJobM2=[]
-    OrderJobM3=[]
-    i=0
-    for w in JobResult:
-        if(w==1):
-            M1.append(JobNumber)
-            OrderJobM1.append(ChromosomeList[OrderNum])
-        elif(w==2):
-            M2.append(JobNumber)
-            OrderJobM2.append(ChromosomeList[OrderNum])
-        else:
-            M3.append(JobNumber)
-            OrderJobM3.append(ChromosomeList[OrderNum])
-        JobNumber+=1
-        OrderNum+=1
-    '''
-
-    #print("步驟一")
-    #print(M1)
-    #print(M2)
-    #print(M3)
-
-    #步驟二
-    #決定每個Job在三個機台中的先後順序
-
-    def GetMachineJob(M1,OrderJobM1):
-        cM1 = list(zip(M1,OrderJobM1))  #兩個一維轉成一個二維
-        nM1=sorted(cM1,key=(lambda x:x[1]),reverse=True) #二維排序(x[1]針對欄位二) 由大到小
-        nnM1=[]
-        for a in range(len(nM1)):
-        # print(nM1[a][0]) >> Job幾
-            nnM1.append(nM1[a][0])
-        return nnM1
-
-    FinalM1=GetMachineJob(M1,OrderJobM1)
-    FinalM2=GetMachineJob(M2,OrderJobM2)
-    FinalM3=GetMachineJob(M3,OrderJobM3)
-
-    #print("步驟二")
-    #print(FinalM1)
-    #print(FinalM2)
-    #print(FinalM3)
-
-    ##--------------------------------要改------------------------------
-    #步驟三
-    #計算每個Job的開始與結束時間
-
-    ###---------M1-------
-
-    # 開始時間
-    M1t=0
-    M1StartAnswer=M1t
-    M1StartT=[]
-    M1StartT.append(M1t)
-    for b in range(len(FinalM1)-1):
-    # M1StartT.append(Processtime[nnM1[b]-1][0])
-        M1StartAnswer+=ProcessTime[FinalM1[b]-1][0]
-        M1StartT.append(M1StartAnswer)
-
-    # 結束時間
-    M1EndAnswer=M1t
-    M1EndT=[0]
-    for b in range(len(FinalM1)):
-    # M1StartT.append(Processtime[nnM1[b]-1][0])
-        M1EndAnswer+=ProcessTime[FinalM1[b]-1][0]   #0 [80,0,60] 取第一個欄位
-        M1EndT.append(M1EndAnswer)
-    # 合併
-    M1Answer = list(zip(FinalM1,M1StartT,M1EndT))
-    #print(M1Answer)
-
-
-    ###---------M2-------
-
-    # 開始時間
-    M2t=0
-    M2StartAnswer=M2t
-    M2StartT=[]
-    M2StartT.append(M2t)
-    for b in range(len(FinalM2)-1):
-    # M1StartT.append(Processtime[nnM1[b]-1][0])
-        M2StartAnswer+=ProcessTime[FinalM2[b]-1][1]    #1 [80,0,60] 取第二個欄位
-        M2StartT.append(M2StartAnswer)
-
-    # 結束時間
-    M2EndAnswer=M2t
-    M2EndT=[0]
-    for b in range(len(FinalM2)):
-    # M1StartT.append(Processtime[nnM1[b]-1][0])
-        M2EndAnswer+=ProcessTime[FinalM2[b]-1][1]
-        M2EndT.append(M2EndAnswer)
-    # 合併
-    M2Answer = list(zip(FinalM2,M2StartT,M2EndT))
-    #print(M2Answer)
-
-    ###---------M3-------
-
-
-    # 開始時間
-    M3t=0
-    M3StartAnswer=M3t
-    M3StartT=[]
-    M3StartT.append(M3t)
-    for b in range(len(FinalM3)-1):
-    # M1StartT.append(Processtime[nnM1[b]-1][0])
-        M3StartAnswer+=ProcessTime[FinalM3[b]-1][2]    #2 [80,0,60] 取第三個欄位
-        M3StartT.append(M3StartAnswer)
-
-    # 結束時間
-    M3EndAnswer=M3t
-    M3EndT=[0]
-    for b in range(len(FinalM3)):
-    # M1StartT.append(Processtime[nnM1[b]-1][0])
-        M3EndAnswer+=ProcessTime[FinalM3[b]-1][2]
-        M3EndT.append(M3EndAnswer)
-    # 合併
-    M3Answer = list(zip(FinalM3,M3StartT,M3EndT))
-    #print(M3Answer)
-
-    #-------Makespan----------
-    #考慮有機器未派到工作之情況(EndT 先加一個0)
-
-    #決定makespan比大小
-    EndTList=[]
-    EndTList.append(M1EndT[-1])
-    EndTList.append(M2EndT[-1])
-    EndTList.append(M3EndT[-1])
-
-    OrderEndT=sorted(EndTList,reverse=True) #由大到小
-    Makespan=OrderEndT[0]
-
-    MakespanList=[]
-    MakespanList.append(Makespan)
-    #print(Makespan)
-
+    #最後合併
     a=ChromosomeList
-    b=FinalM1
-    c=FinalM2
-    d=FinalM3
-    e=MakespanList
-    import numpy as np
-    OneChromosome=np.zeros((5,20))
     for i in range(len(a)):
         OneChromosome[0][i]=a[i]
-    for i in range(len(b)):
-        OneChromosome[1][i]=b[i]
-    for i in range(len(c)):
-        OneChromosome[2][i]=c[i]
-    for i in range(len(d)):
-        OneChromosome[3][i]=d[i]
-    for i in range(len(e)):
-        OneChromosome[4][i]=e[i]
 
-    return OneChromosome #產生特定一條染色體，機率須給定
-                          #GetChromosome(ChromosomeList)
+    OneChromosome[4][0]=Makespan
+
+    return OneChromosome
+     #GetChromosome(ChromosomeList)
+
+
 #三維array
 import numpy as np
 np.set_printoptions(precision=4,suppress=True) #suppress取消科學計數法
@@ -234,16 +114,15 @@ np.set_printoptions(precision=4,suppress=True) #suppress取消科學計數法
 #總共50+50
 
 #初始化
-PopulationNum=50
+PopulationNum=100
 TotalChromosome=np.zeros((PopulationNum*2,5,20))
 ParentsChromosome=np.zeros((PopulationNum,5,20))
 OffspringChromosome=np.zeros((PopulationNum,5,20))
 Temp1Chromosome=np.zeros((PopulationNum,5,20))
 Temp2Chromosome=np.zeros((PopulationNum,5,20))
-Temp_rank_Chromosome=np.zeros((PopulationNum,5,20))
 FinalChromosome=np.zeros((PopulationNum,5,20))
 
-TestChromosome=np.zeros((50,5,20))
+
 
 #母體
 ##產生第一次母代50條的染色體
@@ -257,22 +136,16 @@ def GetOneGeneration(ParentsChromosome):
     #---------------------
     #交配率(交配&突變)
     import math
-    PopulationNum=50
-    Matingrate=0.01
+    Matingrate=0.6
     MatingNum=math.ceil(PopulationNum*Matingrate) #無條件進位
     if(MatingNum%2==1):
         MatingNum+=1
-    #Question
-
-    #Question
     MutationNum=PopulationNum-MatingNum
 
     #------------------------------------------------------------------
 
     #交配
     ##任兩條進行交配(一次產生兩條)
-
-    #tempMateNum單數不適用!!!!
 
     even = [i-1 for i in range(1,MatingNum) if i %2==1] #tempMateNum決定要做幾次(3次>>產生6條子代)
 
@@ -309,9 +182,6 @@ def GetOneGeneration(ParentsChromosome):
         c1[strpoint-1:endpoint]=p2[strpoint-1:endpoint]
         c2[strpoint-1:endpoint]=p1[strpoint-1:endpoint]
 
-        #print(c1)
-        #print(c2)
-
         #produce offsprings
         Offspring1=GetChromosome(c1)
         Offspring2=GetChromosome(c2)
@@ -324,9 +194,6 @@ def GetOneGeneration(ParentsChromosome):
     #單點突變
     ##待
 
-    #決定要做幾次
-
-    import random
     #任選一條
     size1=range(0,PopulationNum)
     #print(size1)
@@ -349,9 +216,6 @@ def GetOneGeneration(ParentsChromosome):
     #print(Temp2Chromosome)
 
     #合併
-
-    #以上暫時
-
     for i in range(0,PopulationNum):
         TotalChromosome[i]=ParentsChromosome[i] #前1/2
 
@@ -361,7 +225,6 @@ def GetOneGeneration(ParentsChromosome):
     for i in range(0,MutationNum):
         TotalChromosome[i+PopulationNum+MatingNum]=Temp2Chromosome[i]
 
-    #print(TotalChromosome)
 
     MakespanOrderIndex=[]
     MakespanOrderValue=[]
@@ -373,7 +236,7 @@ def GetOneGeneration(ParentsChromosome):
         MakespanOrderValue.append(TotalChromosome[i][4][0]) #[4][0] 固定
 
     tempMs = list(zip(MakespanOrderIndex,MakespanOrderValue))  #兩個一維轉成一個二維
-    OrderMs=sorted(tempMs,key=(lambda x:x[1]),reverse=False) #二維排序(x[1]針對欄位二) 由大到小
+    OrderMs=sorted(tempMs,key=(lambda x:x[1]),reverse=False) #二維排序(x[1]針對欄位二)
 
 
     #rate
@@ -416,15 +279,13 @@ def GetOneGeneration(ParentsChromosome):
         if(temp not in select_index):
             select_index.append(temp)
     #print(count)
-    #測試
-    #OrderMsAA=sorted(select_index,reverse=False)
-    #print(OrderMsAA)
+    #print(select_index)
 
     #合併
     ##菁英
     for i in range(eliteN): #10
         FinalChromosome[i]=TotalChromosome[OrderMs[i][0]]
-    ##輪盤法
+    ##輪盤
     j=eliteN
     for i in select_index: #10-100
         FinalChromosome[j]=TotalChromosome[OrderMs[i+eliteN][0]]
@@ -435,27 +296,18 @@ def GetOneGeneration(ParentsChromosome):
 #print(TotalChromosome[OrderMs[0][0]])
 
 #做100代
-
-#MakespanRecord=[]
-#for i in range(10):
-#    A=GetOneGeneration(ParentsChromosome)
-#    ParentsChromosome=A
- #   MakespanRecord.append(A[0][4][0])
-
-#print(A[0:3])
-
-
+#TEST
 MakespanRecord=[]
-GernerationN=0
+GernerationN=50
 MakespanRecord.append(ParentsChromosome[0][4][0])
 
-for i in range(100):
+for i in range(50):
+#while(int(MakespanRecord[-1])!=158):
     A=GetOneGeneration(ParentsChromosome)
     ParentsChromosome=A
     MakespanRecord.append(A[0][4][0])
-    GernerationN=i+1
-print(A)
-
+    #GernerationN+=1
+    #print(ParentsChromosome[:][:][0:10])
 
 
 #時間內做完
@@ -474,7 +326,7 @@ for i in range(15000): #最多15000代
     GernerationN=i+1
     if(processT>=pt): #1秒
         break
- '''
+  '''
 
 #收斂圖
 
@@ -492,48 +344,40 @@ print(MakespanRecord[-1])
 #print("執行時間：%f 秒" % (end - start))
 
 
-#算出開始&結束時間(以上只有工作順序)
+#Final time
+##開始&結束時間(以上只有工作順序)
+Job_N=[]
+strT=[]
+temp_str=0 #初始時間
+endT=[]
+temp_end=0
+for i in range(MachineNum+1): #小心 #M1、M2、M3
+    if i==0:
+        continue
+    for s in range(JobNum):
+        if(s==0):
+            temp_str=0 #換機temp_str從0開始計算
+        if(ParentsChromosome[0][i][s]!=0):
+            Job_N.append(int(ParentsChromosome[0][i][s]))
+            strT.append(temp_str)
+            temp_end=temp_str+ProcessTime[int(ParentsChromosome[0][i][s])-1][i-1]
+            temp_str=temp_end
+            endT.append(temp_end)
 
 
 #畫甘特圖
-'''
-print(A[0])
-for i in range(10):
-    if(A[0][1][i]!=0):
-        print(int(A[0][1][i]))
-'''
 
-'''
 import plotly.express as px
-import pandas as pd
 import datetime
-
 df=[]
-#M1
-# Task放工件編號; Start&Finish分別放各工件的開始與結束時間，
-# 初始時間需先給定一個時間格式 ex: 2020-07-31 分鐘格式 ，我這邊是利用datetime.timedelta(minutes=)將工作時間轉成分鐘
-# Resource 放機器分類
-
-for i in range(len(M1Answer)):
-    df.append(dict(Task='Job %s'%M1Answer[i][0], Start='2020-07-31 %s'%datetime.timedelta(minutes=M1Answer[i][1]),
-    Finish='2020-07-31 %s'%datetime.timedelta(minutes=M1Answer[i][2]),Resource='Machine 1'))
-
-#M2
-for i in range(len(M2Answer)):
-    df.append(dict(Task='Job %s'%M2Answer[i][0], Start='2020-07-31 %s'%datetime.timedelta(minutes=M2Answer[i][1]),
-    Finish='2020-07-31 %s'%datetime.timedelta(minutes=M2Answer[i][2]),Resource='Machine 2'))
-
-#M3
-for i in range(len(M3Answer)):
-    df.append(dict(Task='Job %s'%M3Answer[i][0], Start='2020-07-31 %s'%datetime.timedelta(minutes=M3Answer[i][1]),
-    Finish='2020-07-31 %s'%datetime.timedelta(minutes=M3Answer[i][2]),Resource='Machine 3'))
+m=0
+for i in range(len(strT)):
+    if(strT[i]==0): #用這判斷
+        m+=1
+    df.append(dict(Task='Job %s'%Job_N[i],
+    Start='2020-07-31 %s'%datetime.timedelta(minutes=strT[i]),
+    Finish='2020-07-31 %s'%datetime.timedelta(minutes=endT[i]),Resource='Machine %s'%m))
 
 #呈現圖表
 fig = px.timeline(df, x_start="Start", x_end="Finish", y="Resource", color="Task",text="Task")
 fig.show()
-'''
-
-
-
-
-

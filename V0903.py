@@ -12,7 +12,7 @@ ProcessTime=[[80,0,60],[75,86,94],[25,0,96],[78,95,89],[45,78,0],
 
 JobNum=10
 ChromosomeLenth=JobNum*2
-MachoneNum=3
+MachineNum=3
 
     #產生新的機率(ok)
 def GetInitial():
@@ -44,7 +44,7 @@ def GetChromosome(ChromosomeList):
 
         #工作派給機器(j)
         FinalMachineJ1=0
-        sequence=[i for i in range(MachoneNum)] #機1.2.3
+        sequence=[i for i in range(MachineNum)] #機1.2.3
         for j in sequence:
             if(MachineLimit[s][j]==1):
                 k-=1
@@ -434,12 +434,12 @@ MakespanRecord=[]
 GernerationN=0
 MakespanRecord.append(ParentsChromosome[0][4][0])
 
-for i in range(15):
+for i in range(50):
     A=GetOneGeneration(ParentsChromosome)
     ParentsChromosome=A
     MakespanRecord.append(A[0][4][0])
     GernerationN=i+1
-print(A)
+#print(A)
 
 
 #時間內做完
