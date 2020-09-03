@@ -201,7 +201,7 @@ def GetOneGeneration(ParentsChromosome):
     #print(AnyOne)
 
     for i in range(MutationNum):
-        size2=range(0,20) #基因數
+        size2=range(0,10) #基因數
         AnyGene=random.sample(size2,1) #list
         #print(AnyGene)
         prob=OffspringChromosome[AnyChros[i]][0].tolist()
@@ -298,16 +298,19 @@ def GetOneGeneration(ParentsChromosome):
 #做100代
 #TEST
 MakespanRecord=[]
-GernerationN=50
+GernerationN=0
 MakespanRecord.append(ParentsChromosome[0][4][0])
 
-for i in range(50):
-#while(int(MakespanRecord[-1])!=158):
+#for i in range(1000):
+while(int(MakespanRecord[-1])!=158):
     A=GetOneGeneration(ParentsChromosome)
     ParentsChromosome=A
     MakespanRecord.append(A[0][4][0])
-    #GernerationN+=1
-    #print(ParentsChromosome[:][:][0:10])
+    GernerationN+=1
+
+end = time.process_time()
+processT=end-start
+#print(ParentsChromosome[:][:][0:5])
 
 
 #時間內做完
@@ -336,13 +339,6 @@ plt.plot([i for i in range(len(MakespanRecord))],MakespanRecord,'b') #x,y為list
 plt.ylabel('makespan',fontsize=15)
 plt.xlabel('generation',fontsize=15)
 plt.show()
-
-
-# 輸出結果
-print(str(GernerationN)+"代")
-print(MakespanRecord[-1])
-#print("執行時間：%f 秒" % (end - start))
-
 
 #Final time
 ##開始&結束時間(以上只有工作順序)
@@ -381,3 +377,9 @@ for i in range(len(strT)):
 #呈現圖表
 fig = px.timeline(df, x_start="Start", x_end="Finish", y="Resource", color="Task",text="Task")
 fig.show()
+
+
+# 輸出結果
+print(str(GernerationN)+"代")
+print(MakespanRecord[-1])
+print("執行時間：%f 秒" % processT)

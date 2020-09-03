@@ -429,12 +429,11 @@ print(A[0:3])
 """
 
 
-
 MakespanRecord=[]
 GernerationN=0
 MakespanRecord.append(ParentsChromosome[0][4][0])
 
-for i in range(50):
+for i in range(1000):
     A=GetOneGeneration(ParentsChromosome)
     ParentsChromosome=A
     MakespanRecord.append(A[0][4][0])
