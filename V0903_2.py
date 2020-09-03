@@ -241,10 +241,10 @@ def GetOneGeneration(ParentsChromosome):
 
     #rate
     eliteN=int(PopulationNum*0.1) #10
-    rankN=PopulationNum-eliteN #40
-    rank_rangeN=PopulationNum*2-eliteN #90
+    rankN=PopulationNum-eliteN #90
+    rank_rangeN=PopulationNum*2-eliteN #190
 
-    #等級輪盤制
+    ##等級輪盤制
     def sum(num): #分母
         sum = 0
         x=1
@@ -295,7 +295,7 @@ def GetOneGeneration(ParentsChromosome):
 
 #print(TotalChromosome[OrderMs[0][0]])
 
-#做100代
+
 #TEST
 MakespanRecord=[]
 GernerationN=0
@@ -340,8 +340,8 @@ plt.ylabel('makespan',fontsize=15)
 plt.xlabel('generation',fontsize=15)
 plt.show()
 
-#Final time
-##開始&結束時間(以上只有工作順序)
+
+##開始&結束時間(Final time)
 Job_N=[]
 strT=[]
 temp_str=0 #初始時間
