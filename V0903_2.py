@@ -114,7 +114,7 @@ np.set_printoptions(precision=4,suppress=True) #suppress取消科學計數法
 #總共50+50
 
 #初始化
-PopulationNum=100
+PopulationNum=100 #---------------------------------------------改-----------------
 TotalChromosome=np.zeros((PopulationNum*2,5,20))
 ParentsChromosome=np.zeros((PopulationNum,5,20))
 OffspringChromosome=np.zeros((PopulationNum,5,20))
@@ -167,7 +167,7 @@ def GetOneGeneration(ParentsChromosome):
 
         # 雙點交配
         CutPoint=[]
-        size=range(1,21)  #染色體大小 #10+10(range(1,21))
+        size=range(1,11)  #染色體大小 #10+10(range(1,21)) ****************************改*********************
 
         CutPoint=random.sample(size, 2)
         CutPoint.sort()
@@ -201,7 +201,7 @@ def GetOneGeneration(ParentsChromosome):
     #print(AnyOne)
 
     for i in range(MutationNum):
-        size2=range(0,10) #基因數
+        size2=range(0,10) #基因數 ###*****************************改***************************
         AnyGene=random.sample(size2,1) #list
         #print(AnyGene)
         prob=OffspringChromosome[AnyChros[i]][0].tolist()
