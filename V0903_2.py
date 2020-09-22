@@ -368,7 +368,7 @@ import datetime
 df=[]
 m=0
 for i in range(len(strT)):
-    if(strT[i]==0): #用這判斷
+    if(strT[i]==0):
         m+=1
     df.append(dict(Task='Job %s'%Job_N[i],
     Start='2020-07-31 %s'%datetime.timedelta(minutes=strT[i]),
